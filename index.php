@@ -21,24 +21,34 @@
     <div class="container-fluid">
       <div class="display-4 text-center mt-4 mb-4">Hello there and welcome to the Fiverr Clone!</div>
       <div class="row">
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-body">
-              <h1>Are you looking for a talent?</h1>
-              <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid">
-              <p>Content writers create clear, engaging, and informative content that helps businesses communicate their services or products effectively, build brand authority, attract and retain customers, and drive web traffic and conversions.</p>
-              <h3><a href="client/login.php">Get started here as client</a></h3>
-            </div>
+        <div class="col-md-4 d-flex">
+          <div class="card shadow mb-4 flex-fill h-100">
+        <div class="card-body d-flex flex-column">
+          <h1 class="h5 mb-3">Are you looking for a talent?</h1>
+          <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid mb-3" style="max-height:180px;object-fit:cover;">
+          <p class="flex-grow-1">Content writers create clear, engaging, and informative content that helps businesses communicate their services or products effectively, build brand authority, attract and retain customers, and drive web traffic and conversions.</p>
+          <h3 class="mt-3"><a href="client/login.php">Get started here as client</a></h3>
+        </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-body">
-              <h1>Are you looking for a job?</h1>
-              <img src="https://plus.unsplash.com/premium_photo-1661582394864-ebf82b779eb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid">
-              <p>Admin writers play a key role in content team development. They are the highest-ranking editorial authority responsible for managing the entire editorial process, and aligning all published material with the publication’s overall vision and strategy. </p>
-              <h3><a href="freelancer/login.php">Get started here as freelancer</a></h3>
-            </div>
+        <div class="col-md-4 d-flex">
+          <div class="card shadow mb-4 flex-fill h-100">
+        <div class="card-body d-flex flex-column">
+          <h1 class="h5 mb-3">Are you looking for a job?</h1>
+          <img src="https://plus.unsplash.com/premium_photo-1661582394864-ebf82b779eb0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid mb-3" style="max-height:180px;object-fit:cover;">
+          <p class="flex-grow-1">Admin writers play a key role in content team development. They are the highest-ranking editorial authority responsible for managing the entire editorial process, and aligning all published material with the publication’s overall vision and strategy.</p>
+          <h3 class="mt-3"><a href="freelancer/login.php">Get started here as freelancer</a></h3>
+        </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex">
+          <div class="card shadow mb-4 flex-fill h-100">
+        <div class="card-body d-flex flex-column">
+          <h1 class="h5 mb-3">Are you an administrator?</h1>
+          <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid mb-3" style="max-height:180px;object-fit:cover;">
+          <p class="flex-grow-1">Administrators manage the overall platform, ensuring smooth operations, user management and security. They oversee clients and freelancers, enforce the one offer per proposal rule, manage categories with subcategories and maintain system integrity for organized, reliable and secure services.</p>
+          <h3 class="mt-3"><a href="fiverr_administrator/login.php">Get started here as administrator</a></h3>
+        </div>
           </div>
         </div>
       </div>

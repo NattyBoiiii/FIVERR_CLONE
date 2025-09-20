@@ -4,7 +4,7 @@ require_once '../classloader.php';
 if (isset($_POST['insertNewUserBtn'])) {
 	$username = htmlspecialchars(trim($_POST['username']));
 	$email = htmlspecialchars(trim($_POST['email']));
-	$contact_number = htmlspecialchars(trim($_POST['contact_number']));
+	$contact_number = isset($_POST['contact_number']) ? htmlspecialchars(trim($_POST['contact_number'])) : '';
 	$password = trim($_POST['password']);
 	$confirm_password = trim($_POST['confirm_password']);
 
@@ -14,7 +14,7 @@ if (isset($_POST['insertNewUserBtn'])) {
 
 			if (!$userObj->usernameExists($username)) {
 
-				if ($userObj->registerUser($username, $email, $password, $contact_number)) {
+				if ($userObj->registerUser($username, $email, $password, $contact_number, 'client')) {
 					header("Location: ../login.php");
 				}
 
@@ -50,7 +50,7 @@ if (isset($_POST['loginUserBtn'])) {
 
 	if (!empty($email) && !empty($password)) {
 
-		if ($userObj->loginUser($email, $password)) {
+		if ($userObj->loginUser($email, $password, 'client')) {
 			header("Location: ../index.php");
 		}
 		else {
@@ -81,7 +81,7 @@ if (isset($_POST['updateUserBtn'])) {
 	}
 }
 
-if (isset($_POST['insertOfferBtn'])) {
+if (isset($_POST['insertOfferBtn']) || (isset($_POST['proposal_id']) && isset($_POST['description']))) {
     $user_id = $_SESSION['user_id'];
     $proposal_id = $_POST['proposal_id'];
     $description = htmlspecialchars($_POST['description']);
@@ -95,6 +95,7 @@ if (isset($_POST['insertOfferBtn'])) {
 
     if ($offerObj->createOffer($user_id, $description, $proposal_id)) {
         header("Location: ../index.php");
+        exit();
     }
 }
 
@@ -115,16 +116,5 @@ if (isset($_POST['deleteOfferBtn'])) {
 		$_SESSION['status'] = '200';
 		header("Location: ../index.php");
 	}
-}
-
-if (isset($_POST['submit_offer'])) {
-    $proposal_id = $_POST['proposal_id'];
-    $description = $_POST['description'];
-    $user_id = $_SESSION['user_id'];
-    $offer_date_added = date('Y-m-d H:i:s');
-
-    $stmt = $conn->prepare("INSERT INTO offers (proposal_id, user_id, description, offer_date_added) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$proposal_id, $user_id, $description, $offer_date_added]);
-    // ...redirect or other logic...
 }
 ?>

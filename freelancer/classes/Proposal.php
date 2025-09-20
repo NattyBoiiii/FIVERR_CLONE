@@ -11,9 +11,9 @@ class Proposal extends Database {
      * @param int $author_id The ID of the author.
      * @return int The ID of the newly created Proposal.
      */
-    public function createProposal($user_id, $description, $image, $min_price, $max_price) {
-        $sql = "INSERT INTO Proposals (user_id, description, image, min_price, max_price) VALUES (?, ?, ?, ?, ?)";
-        return $this->executeNonQuery($sql, [$user_id, $description, $image, $min_price, $max_price]);
+    public function createProposal($user_id, $description, $image, $min_price, $max_price, $category_id = null, $subcategory_id = null) {
+        $sql = "INSERT INTO Proposals (user_id, description, image, min_price, max_price, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        return $this->executeNonQuery($sql, [$user_id, $description, $image, $min_price, $max_price, $category_id, $subcategory_id]);
     }
 
     /**
@@ -27,10 +27,45 @@ class Proposal extends Database {
             return $this->executeQuerySingle($sql, [$id]);
         }
         $sql = "SELECT Proposals.*, fiverr_clone_users.*, 
+                categories.name AS category_name, subcategories.name AS subcategory_name,
                 Proposals.date_added AS proposals_date_added
-                FROM Proposals JOIN fiverr_clone_users ON 
-                Proposals.user_id = fiverr_clone_users.user_id
+                FROM Proposals 
+                JOIN fiverr_clone_users ON Proposals.user_id = fiverr_clone_users.user_id
+                LEFT JOIN categories ON Proposals.category_id = categories.category_id
+                LEFT JOIN subcategories ON Proposals.subcategory_id = subcategories.subcategory_id
                 ORDER BY Proposals.date_added DESC";
+        return $this->executeQuery($sql);
+    }
+
+    public function getProposalsFiltered($category_id = null, $subcategory_id = null) {
+        $conditions = [];
+        $params = [];
+        if (!empty($subcategory_id)) {
+            $conditions[] = "Proposals.subcategory_id = ?";
+            $params[] = $subcategory_id;
+        } elseif (!empty($category_id)) {
+            $conditions[] = "Proposals.category_id = ?";
+            $params[] = $category_id;
+        }
+
+        $whereSql = '';
+        if (!empty($conditions)) {
+            $whereSql = 'WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $sql = "SELECT Proposals.*, fiverr_clone_users.*, 
+                categories.name AS category_name, subcategories.name AS subcategory_name,
+                Proposals.date_added AS proposals_date_added
+                FROM Proposals 
+                JOIN fiverr_clone_users ON Proposals.user_id = fiverr_clone_users.user_id
+                LEFT JOIN categories ON Proposals.category_id = categories.category_id
+                LEFT JOIN subcategories ON Proposals.subcategory_id = subcategories.subcategory_id
+                $whereSql
+                ORDER BY Proposals.date_added DESC";
+
+        if (!empty($params)) {
+            return $this->executeQuery($sql, $params);
+        }
         return $this->executeQuery($sql);
     }
 

@@ -47,13 +47,29 @@ if (!$userObj->isClient()) {
       </div>
       <div class="row justify-content-center">
         <div class="col-md-12">
-          <?php $getProposals = $proposalObj->getProposals(); ?>
+          <?php 
+            $selectedCategoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
+            $selectedSubcategoryId = isset($_GET['subcategory_id']) ? intval($_GET['subcategory_id']) : null;
+            if (!empty($selectedCategoryId) || !empty($selectedSubcategoryId)) {
+              $getProposals = $proposalObj->getProposalsFiltered($selectedCategoryId, $selectedSubcategoryId);
+            } else {
+              $getProposals = $proposalObj->getProposals();
+            }
+          ?>
           <?php foreach ($getProposals as $proposal) { ?>
           <div class="card shadow mt-4 mb-4">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
                   <h2><a href="other_profile_view.php?user_id=<?php echo $proposal['user_id'] ?>"><?php echo $proposal['username']; ?></a></h2>
+                  <?php if (!empty($proposal['category_name'])) { ?>
+                    <div class="mb-2">
+                      <span class="badge badge-primary"><?php echo htmlspecialchars($proposal['category_name']); ?></span>
+                      <?php if (!empty($proposal['subcategory_name'])) { ?>
+                        <span class="badge badge-secondary"><?php echo htmlspecialchars($proposal['subcategory_name']); ?></span>
+                      <?php } ?>
+                    </div>
+                  <?php } ?>
                   <img src="<?php echo '../images/'.$proposal['image']; ?>" class="img-fluid" alt="">
                   <p class="mt-4 mb-4"><?php echo $proposal['description']; ?></p>
                   <h4><i><?php echo number_format($proposal['min_price']) . " - " . number_format($proposal['max_price']);?> PHP</i></h4>

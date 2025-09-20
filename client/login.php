@@ -55,6 +55,7 @@
                 <div class="form-group">
                   <p>Don't have an account yet? You may <a href="register.php"> register here!</a></p>
                   <p> Are you a freelancer? You may <a href="../freelancer/login.php"> login here!</a></p>
+                  <p> Are you a Admin? You may <a href ="../fiverr_administrator/login.php"> login here!</a></p>
                   <p> do you want to go back to homepage? You may <a href="../index.php"> click here!</a></p>
                 </div>
               </div>

@@ -55,6 +55,22 @@ if ($userObj->isClient()) {
                     <input type="text" class="form-control" name="description" required>
                   </div>
                   <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" name="category_id" id="category" required>
+                      <option value="">Select a Category</option>
+                      <?php $categories = $categoriesObj->getCategories(); ?>
+                      <?php foreach ($categories as $category) { ?>
+                        <option value="<?php echo $category['category_id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="subcategory">Subcategory</label>
+                    <select class="form-control" name="subcategory_id" id="subcategory" required>
+                      <option value="">Select a Category first</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label for="exampleInputEmail1">Minimum Price</label>
                     <input type="number" class="form-control" name="min_price" required>
                   </div>
@@ -73,11 +89,27 @@ if ($userObj->isClient()) {
           </div>
         </div>
         <div class="col-md-7">
-          <?php $getProposals = $proposalObj->getProposals(); ?>
+          <?php 
+            $selectedCategoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
+            $selectedSubcategoryId = isset($_GET['subcategory_id']) ? intval($_GET['subcategory_id']) : null;
+            if (!empty($selectedCategoryId) || !empty($selectedSubcategoryId)) {
+              $getProposals = $proposalObj->getProposalsFiltered($selectedCategoryId, $selectedSubcategoryId);
+            } else {
+              $getProposals = $proposalObj->getProposals();
+            }
+          ?>
           <?php foreach ($getProposals as $proposal) { ?>
           <div class="card shadow mt-4 mb-4">
             <div class="card-body">
               <h2><a href="other_profile_view.php?user_id=<?php echo $proposal['user_id']; ?>"><?php echo $proposal['username']; ?></a></h2>
+              <?php if (!empty($proposal['category_name'])) { ?>
+                <div class="mb-2">
+                  <span class="badge badge-primary"><?php echo htmlspecialchars($proposal['category_name']); ?></span>
+                  <?php if (!empty($proposal['subcategory_name'])) { ?>
+                    <span class="badge badge-secondary"><?php echo htmlspecialchars($proposal['subcategory_name']); ?></span>
+                  <?php } ?>
+                </div>
+              <?php } ?>
               <img src="<?php echo '../images/' . $proposal['image']; ?>" alt="" class="img-fluid">
               <p class="mt-4"><i><?php echo $proposal['proposals_date_added']; ?></i></p>
               <p class="mt-2"><?php echo $proposal['description']; ?></p>
@@ -91,5 +123,35 @@ if ($userObj->isClient()) {
         </div>
       </div>
     </div>
+    <script>
+    $(document).ready(function() {
+        $('#category').change(function() {
+            var categoryId = $(this).val();
+            var subcategorySelect = $('#subcategory');
+            
+            subcategorySelect.empty();
+            subcategorySelect.append('<option value="">Select a Subcategory</option>');
+            
+            if (categoryId) {
+                $.ajax({
+                    url: 'get_subcategories.php',
+                    method: 'POST',
+                    data: { category_id: categoryId },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.success) {
+                            $.each(data.subcategories, function(index, subcategory) {
+                                subcategorySelect.append('<option value="' + subcategory.subcategory_id + '">' + subcategory.name + '</option>');
+                            });
+                        }
+                    },
+                    error: function() {
+                        console.log('Error loading subcategories');
+                    }
+                });
+            }
+        });
+    });
+    </script>
   </body>
 </html>

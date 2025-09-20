@@ -50,6 +50,10 @@
               <input type="email" class="form-control" name="email" required>
             </div>
             <div class="form-group">
+              <label for="exampleInputEmail1">Contact Number</label>
+              <input type="text" class="form-control" name="contact_number">
+            </div>
+            <div class="form-group">
               <label for="exampleInputEmail1">Password</label>
               <input type="password" class="form-control" name="password" required>
             </div>
